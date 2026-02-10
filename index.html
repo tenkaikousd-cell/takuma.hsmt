@@ -1,0 +1,146 @@
+<!-- フォント -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<div id="student-advisor"></div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const container = document.getElementById("student-advisor");
+
+  container.innerHTML = `
+  <div class="advisor-wrapper">
+    <h1 class="title">志望校合格ナビゲーター</h1>
+
+    <div class="card">
+      <h2>Sもぎ偏差値入力</h2>
+      <div class="grid">
+        ${["english","math","japanese","science","social"].map(subject => `
+          <div>
+            <label>${subjectLabel(subject)}</label>
+            <input type="number" id="${subject}" min="30" max="80">
+          </div>
+        `).join("")}
+      </div>
+      <div id="averageBox" class="average"></div>
+    </div>
+
+    <div class="card">
+      <h2>志望校偏差値</h2>
+      <input type="number" id="target" placeholder="例：65">
+    </div>
+
+    <div class="card">
+      <button id="calcBtn">推奨テキストを表示</button>
+      <div id="result"></div>
+    </div>
+  </div>
+  `;
+
+  function subjectLabel(key){
+    return {
+      english:"英語",
+      math:"数学",
+      japanese:"国語",
+      science:"理科",
+      social:"社会"
+    }[key];
+  }
+
+  function calcAverage(){
+    const values = ["english","math","japanese","science","social"]
+      .map(id => Number(document.getElementById(id).value))
+      .filter(v => v>0);
+    if(values.length===0) return 0;
+    return Math.round(values.reduce((a,b)=>a+b,0)/values.length);
+  }
+
+  document.getElementById("calcBtn").addEventListener("click", function(){
+    const avg = calcAverage();
+    const target = Number(document.getElementById("target").value);
+    const diff = target - avg;
+
+    document.getElementById("averageBox").innerHTML =
+      avg ? "現在の平均偏差値：" + avg : "";
+
+    document.getElementById("result").innerHTML = `
+      <div class="result-box">
+        <p>現在：<strong>${avg}</strong></p>
+        <p>目標：<strong>${target}</strong></p>
+        <p>必要上昇幅：<strong>${diff>0?"+":""}${diff}</strong></p>
+        <p class="hint">${recommendMessage(diff)}</p>
+      </div>
+    `;
+  });
+
+  function recommendMessage(diff){
+    if(diff<=0) return "現状維持で十分狙えます。過去問演習中心に。";
+    if(diff<=3) return "基礎＋標準問題の徹底演習が必要です。";
+    if(diff<=7) return "単元総復習＋演習量増加が必要です。";
+    return "基礎から再構築し、長期戦略を立てましょう。";
+  }
+
+});
+</script>
+
+<style>
+.advisor-wrapper{
+  max-width:800px;
+  margin:40px auto;
+  font-family:'Noto Sans JP',sans-serif;
+}
+.title{
+  text-align:center;
+  font-size:32px;
+  font-weight:900;
+  margin-bottom:30px;
+}
+.card{
+  background:white;
+  padding:25px;
+  margin-bottom:20px;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:15px;
+}
+input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  background:#667eea;
+  color:white;
+  font-weight:700;
+  border-radius:10px;
+  cursor:pointer;
+}
+button:hover{
+  background:#5563d1;
+}
+.result-box{
+  margin-top:20px;
+  background:#f7f7ff;
+  padding:15px;
+  border-radius:10px;
+}
+.hint{
+  margin-top:10px;
+  font-weight:700;
+  color:#444;
+}
+.average{
+  margin-top:15px;
+  font-weight:700;
+}
+</style>
