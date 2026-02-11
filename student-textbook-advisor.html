@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>千葉県公立高校受験対策テキスト自動判定</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #2d3748;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-size: 14px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .score-item {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .score-item:focus-within {
+            border-color: #667eea;
+            background: white;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .stats-number {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 10px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            padding: 20px;
+            border-radius: 16px;
+            color: white;
+            text-align: center;
+        }
+        
+        .stat-box.green {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        .stat-box.pink {
+            background: linear-gradient(135deg, #ed64a6 0%, #d53f8c 100%);
+        }
+        
+        .stat-box.blue {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        }
+        
+        .school-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .textbook-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .textbook-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .textbook-detail {
+            background: #f7fafc;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: -8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #4299e1;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .subject-section {
+            margin-bottom: 30px;
+        }
+        
+        .subject-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-area {
+            display: block;
+        }
+        
+        .form-area.hidden {
+            display: none;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .input-field.error {
+            border-color: #e53e3e;
+            background-color: #fff5f5;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>千葉県公立高校受験対策テキスト自動判定</h1>
+            <p>生徒の成績から最適なテキストを提案します</p>
+        </div>
+
+        <form id="mainForm" class="form-area">
+            <!-- 生徒名入力 -->
+            <div class="card">
+                <h2 class="section-title">👤 生徒情報</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">生徒名</label>
+                    <input type="text" class="input-field" id="studentName" placeholder="例：山田太郎" required>
+                </div>
+            </div>
+
+            <!-- Sもぎ偏差値入力 -->
+            <div class="card">
+                <h2 class="section-title">📖 Sもぎ偏差値入力</h2>
+                
+                <div class="score-grid">
+                    <div class="score-item">
+                        <label class="input-label">英語</label>
+                        <input type="number" class="input-field score-input" id="english" placeholder="偏差値" min="0" max="100">
+                    </div>
+                    <div class="score-item">
+                        <label class="input-label">数学</label>
+                        <input type="number" class="input-field score-input" id="math" placeholder="偏差値" min="0" max="100">
+                    </div>
+                    <div class="score-item">
+                        <label class="input-label">国語</label>
+                        <input type="number" class="input-field score-input" id="japanese" placeholder="偏差値" min="0" max="100">
+                    </div>
+                    <div class="score-item">
+                        <label class="input-label">理科</label>
+                        <input type="number" class="input-field score-input" id="science" placeholder="偏差値" min="0" max="100">
+                    </div>
+                    <div class="score-item">
+                        <label class="input-label">社会</label>
+                        <input type="number" class="input-field score-input" id="social" placeholder="偏差値" min="0" max="100">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5教科偏差値入力 -->
+            <div class="card">
+                <h2 class="section-title">📊 5教科総合偏差値</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">5教科総合偏差値（模試結果）</label>
+                    <input type="number" class="input-field score-input" id="fiveSubjectHensachi" placeholder="5教科総合偏差値" min="0" max="100">
+                </div>
+            </div>
+
+            <!-- 内申点入力 -->
+            <div class="card">
+                <h2 class="section-title">📈 内申点入力</h2>
+                
+                <div class="score-grid">
+                    <div class="score-item">
+                        <label class="input-label">1年生（9教科合計）</label>
+                        <input type="number" class="input-field naishin-input" id="grade1" placeholder="45点満点" min="0" max="45">
+                    </div>
+                    <div class="score-item">
+                        <label class="input-label">2年生（9教科合計）</label>
+                        <input type="number" class="input-field naishin-input" id="grade2" placeholder="45点満点" min="0" max="45">
+                    </div>
+                    <div class="score-item">
+                        <label class="input-label">3年生（9教科合計）</label>
+                        <input type="number" class="input-field naishin-input" id="grade3" placeholder="45点満点" min="0" max="45">
+                    </div>
+                </div>
+
+                <div id="naishinDisplay" class="stats-card hidden">
+                    <div style="font-size: 16px; opacity: 0.9;">内申点合計</div>
+                    <div class="stats-number" id="totalNaishin">0</div>
+                    <div style="font-size: 14px; opacity: 0.9;">/ 135点満点</div>
+                </div>
+            </div>
+
+            <!-- 志望校選択 -->
+            <div class="card">
+                <h2 class="section-title">🏫 志望校選択</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">学科を選択してください</label>
+                    <select class="input-field" id="schoolType" required>
+                        <option value="">選択してください</option>
+                        <option value="normal">普通科</option>
+                        <option value="specialized">専門学科・その他</option>
+                    </select>
+                </div>
+
+                <div id="districtSelect" class="input-group hidden">
+                    <label class="input-label">あなたの学区を選択してください</label>
+                    <select class="input-field" id="studentDistrict" required>
+                        <option value="">選択してください</option>
+                        <option value="1">第1学区（千葉市）</option>
+                        <option value="2">第2学区（市川市、船橋市、松戸市、習志野市、八千代市、浦安市）</option>
+                        <option value="3">第3学区（野田市、柏市、流山市、我孫子市、鎌ケ谷市）</option>
+                        <option value="4">第4学区（成田市、佐倉市、四街道市、八街市、印西市、白井市、富里市、印旛郡）</option>
+                        <option value="5">第5学区（銚子市、旭市、匝瑳市、香取市、香取郡）</option>
+                        <option value="6">第6学区（東金市、山武市、大網白里市、山武郡）</option>
+                        <option value="7">第7学区（茂原市、勝浦市、いすみ市、長生郡、夷隅郡）</option>
+                        <option value="8">第8学区（館山市、鴨川市、南房総市、安房郡）</option>
+                        <option value="9">第9学区（木更津市、市原市、君津市、富津市、袖ケ浦市）</option>
+                    </select>
+                </div>
+
+                <div id="schoolSelect" class="input-group hidden">
+                    <label class="input-label">志望校を選択してください</label>
+                    <select class="input-field" id="targetSchool" required>
+                        <option value="">選択してください</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    📊 推奨テキストを表示
+                </button>
+            </div>
+        </form>
+
+        <!-- 結果表示エリア -->
+        <div id="resultsArea" class="hidden">
+            <!-- 戻るボタン -->
+            <div class="card">
+                <button type="button" class="btn-primary" onclick="backToForm()" style="background: linear-gradient(135deg, #718096 0%, #4a5568 100%);">
+                    ← 入力画面に戻る
+                </button>
+            </div>
+
+            <!-- Excel出力ボタン -->
+            <div class="card">
+                <button type="button" class="btn-primary" onclick="exportToExcel()" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                    📊 結果をExcelで出力
+                </button>
+            </div>
+
+            <!-- 統計カード -->
+            <div class="card">
+                <h2 class="section-title">📊 あなたの現在地と目標</h2>
+                <div class="stats-grid">
+                    <div class="stat-box green">
+                        <div style="font-size: 14px; opacity: 0.9;">現在の平均偏差値</div>
+                        <div style="font-size: 36px; font-weight: 900; margin: 10px 0;" id="currentHensachi">0</div>
+                        <div style="font-size: 12px;">Sもぎ</div>
+                    </div>
+                    <div class="stat-box pink">
+                        <div style="font-size: 14px; opacity: 0.9;">目標偏差値</div>
+                        <div style="font-size: 36px; font-weight: 900; margin: 10px 0;" id="targetHensachi">0</div>
+                        <div style="font-size: 12px;" id="targetSchoolName"></div>
+                    </div>
+                    <div class="stat-box blue">
+                        <div style="font-size: 14px; opacity: 0.9;">必要な上昇幅</div>
+                        <div style="font-size: 36px; font-weight: 900; margin: 10px 0;" id="gapHensachi">0</div>
+                        <div style="font-size: 12px;">ポイント</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 偏差値±3の高校 -->
+            <div id="nearbySchoolsCard" class="card hidden">
+                <h2 class="section-title">🏫 現在の偏差値で狙える高校（±3以内）</h2>
+                <div id="nearbySchoolsList"></div>
+            </div>
+
+            <!-- 推奨テキスト -->
+            <div class="card">
+                <h2 class="section-title">📚 推奨テキスト（教科別）</h2>
+                <div id="textbooksList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 千葉県公立高校データ
+        const chibaHighSchools = {
+            district1: {
+                普通科: [
+                    { name: '県立千葉高校', hensachi: 70, district: 1 },
+                    { name: '県立千葉東高校', hensachi: 68, district: 1 },
+                    { name: '市立千葉高校（普通科）', hensachi: 66, district: 1 },
+                    { name: '県立幕張総合高校（総合学科）', hensachi: 60, district: 1 },
+                    { name: '県立千葉西高校', hensachi: 60, district: 1 },
+                    { name: '県立検見川高校', hensachi: 58, district: 1 },
+                    { name: '県立千葉女子高校（普通科）', hensachi: 55, district: 1 },
+                    { name: '県立千葉南高校', hensachi: 55, district: 1 },
+                    { name: '県立磯辺高校', hensachi: 54, district: 1 },
+                    { name: '県立千葉北高校', hensachi: 53, district: 1 },
+                    { name: '県立千城台高校', hensachi: 48, district: 1 },
+                    { name: '県立若松高校', hensachi: 45, district: 1 },
+                    { name: '県立土気高校', hensachi: 44, district: 1 },
+                    { name: '県立柏井高校', hensachi: 43, district: 1 },
+                    { name: '県立生浜高校（普通科）', hensachi: 40, district: 1 },
+                    { name: '県立犢橋高校', hensachi: 37, district: 1 },
+                    { name: '県立泉高校', hensachi: 35, district: 1 }
+                ]
+            },
+            district2: {
+                普通科: [
+                    { name: '県立船橋高校（普通科）', hensachi: 70, district: 2 },
+                    { name: '県立船橋高校（理数科）', hensachi: 69, district: 2 },
+                    { name: '県立薬園台高校（普通科）', hensachi: 66, district: 2 },
+                    { name: '県立小金高校（総合学科）', hensachi: 66, district: 2 },
+                    { name: '県立船橋東高校', hensachi: 64, district: 2 },
+                    { name: '県立八千代高校（普通科）', hensachi: 62, district: 2 },
+                    { name: '県立国府台高校', hensachi: 60, district: 2 },
+                    { name: '県立津田沼高校', hensachi: 58, district: 2 },
+                    { name: '県立松戸国際高校（普通科）', hensachi: 58, district: 2 },
+                    { name: '県立国分高校', hensachi: 57, district: 2 },
+                    { name: '県立松戸国際高校（国際教養科）', hensachi: 56, district: 2 },
+                    { name: '県立船橋芝山高校', hensachi: 54, district: 2 },
+                    { name: '県立市川東高校', hensachi: 53, district: 2 },
+                    { name: '市立松戸高校（国際人文科）', hensachi: 53, district: 2 },
+                    { name: '市立習志野高校（普通科）', hensachi: 52, district: 2 },
+                    { name: '県立船橋啓明高校', hensachi: 51, district: 2 },
+                    { name: '市立松戸高校（普通科）', hensachi: 51, district: 2 },
+                    { name: '県立松戸高校（普通科）', hensachi: 50, district: 2 },
+                    { name: '市立船橋高校（普通科）', hensachi: 50, district: 2 },
+                    { name: '県立松戸六実高校', hensachi: 49, district: 2 },
+                    { name: '県立市川昴高校', hensachi: 47, district: 2 },
+                    { name: '県立実籾高校', hensachi: 47, district: 2 },
+                    { name: '県立松戸馬橋高校', hensachi: 42, district: 2 },
+                    { name: '県立船橋二和高校', hensachi: 41, district: 2 },
+                    { name: '県立八千代東高校', hensachi: 41, district: 2 },
+                    { name: '県立市川南高校', hensachi: 40, district: 2 },
+                    { name: '県立船橋法典高校', hensachi: 37, district: 2 },
+                    { name: '県立浦安高校', hensachi: 37, district: 2 },
+                    { name: '県立松戸向陽高校', hensachi: 37, district: 2 },
+                    { name: '県立船橋北高校', hensachi: 36, district: 2 },
+                    { name: '県立船橋古和釜高校', hensachi: 35, district: 2 },
+                    { name: '県立八千代西高校', hensachi: 35, district: 2 },
+                    { name: '県立船橋豊富高校', hensachi: 35, district: 2 },
+                    { name: '県立行徳高校', hensachi: 35, district: 2 },
+                    { name: '県立浦安南高校', hensachi: 35, district: 2 }
+                ]
+            },
+            district3: {
+                普通科: [
+                    { name: '県立東葛飾高校', hensachi: 69, district: 3 },
+                    { name: '県立柏高校（普通科）', hensachi: 64, district: 3 },
+                    { name: '県立柏高校（理数科）', hensachi: 62, district: 3 },
+                    { name: '県立鎌ヶ谷高校', hensachi: 61, district: 3 },
+                    { name: '県立柏南高校', hensachi: 61, district: 3 },
+                    { name: '県立柏中央高校', hensachi: 57, district: 3 },
+                    { name: '県立柏の葉高校（普通科）', hensachi: 57, district: 3 },
+                    { name: '県立柏の葉高校（情報理数科）', hensachi: 57, district: 3 },
+                    { name: '県立流山おおたかの森高校（普通科）', hensachi: 51, district: 3 },
+                    { name: '県立我孫子高校', hensachi: 51, district: 3 },
+                    { name: '県立流山おおたかの森高校（国際コミュニケーション科）', hensachi: 50, district: 3 },
+                    { name: '県立柏陵高校', hensachi: 47, district: 3 },
+                    { name: '市立柏高校（普通科）', hensachi: 45, district: 3 },
+                    { name: '県立野田中央高校', hensachi: 43, district: 3 },
+                    { name: '県立流山南高校', hensachi: 38, district: 3 },
+                    { name: '県立沼南高柳高校', hensachi: 37, district: 3 },
+                    { name: '県立鎌ヶ谷西高校', hensachi: 35, district: 3 },
+                    { name: '県立沼南高校', hensachi: 35, district: 3 },
+                    { name: '県立流山北高校', hensachi: 35, district: 3 },
+                    { name: '県立我孫子東高校', hensachi: 35, district: 3 },
+                    { name: '県立関宿高校', hensachi: 35, district: 3 }
+                ]
+            },
+            district4: {
+                普通科: [
+                    { name: '県立佐倉高校（普通科）', hensachi: 67, district: 4 },
+                    { name: '県立佐倉高校（理数科）', hensachi: 65, district: 4 },
+                    { name: '県立成田国際高校（普通科）', hensachi: 61, district: 4 },
+                    { name: '県立成田国際高校（国際科）', hensachi: 59, district: 4 },
+                    { name: '県立佐倉東高校（普通科）', hensachi: 45, district: 4 },
+                    { name: '県立成田北高校', hensachi: 49, district: 4 },
+                    { name: '県立四街道高校', hensachi: 51, district: 4 },
+                    { name: '県立印旛明誠高校', hensachi: 49, district: 4 },
+                    { name: '県立四街道北高校', hensachi: 41, district: 4 },
+                    { name: '県立小見川高校', hensachi: 42, district: 4 },
+                    { name: '県立富里高校', hensachi: 41, district: 4 },
+                    { name: '県立白井高校', hensachi: 41, district: 4 },
+                    { name: '県立多古高校（普通科）', hensachi: 37, district: 4 },
+                    { name: '県立佐倉西高校', hensachi: 37, district: 4 },
+                    { name: '県立八街高校（総合学科）', hensachi: 36, district: 4 },
+                    { name: '県立佐倉南高校', hensachi: 35, district: 4 }
+                ]
+            },
+            district5: {
+                普通科: [
+                    { name: '県立佐原高校（普通科）', hensachi: 60, district: 5 },
+                    { name: '県立佐原高校（理数科）', hensachi: 56, district: 5 },
+                    { name: '県立匝瑳高校（総合学科）', hensachi: 50, district: 5 },
+                    { name: '県立銚子高校', hensachi: 45, district: 5 }
+                ]
+            },
+            district6: {
+                普通科: [
+                    { name: '市立銚子高校（普通科・理数科）', hensachi: 54, district: 6 },
+                    { name: '県立成東高校（普通科・理数科）', hensachi: 58, district: 6 },
+                    { name: '県立東金高校（普通科）', hensachi: 52, district: 6 },
+                    { name: '県立東金高校（国際教養科）', hensachi: 50, district: 6 },
+                    { name: '県立大網高校（普通科）', hensachi: 38, district: 6 },
+                    { name: '県立松尾高校', hensachi: 41, district: 6 },
+                    { name: '県立九十九里高校', hensachi: 35, district: 6 }
+                ]
+            },
+            district7: {
+                普通科: [
+                    { name: '県立長生高校（普通科・理数科）', hensachi: 63, district: 7 },
+                    { name: '県立茂原高校', hensachi: 50, district: 7 },
+                    { name: '県立大多喜高校', hensachi: 45, district: 7 },
+                    { name: '県立大原高校（総合学科）', hensachi: 36, district: 7 }
+                ]
+            },
+            district8: {
+                普通科: [
+                    { name: '県立安房高校', hensachi: 53, district: 8 },
+                    { name: '県立長狭高校', hensachi: 45, district: 8 },
+                    { name: '県立安房拓心高校（総合学科）', hensachi: 39, district: 8 }
+                ]
+            },
+            district9: {
+                普通科: [
+                    { name: '県立木更津高校（普通科）', hensachi: 63, district: 9 },
+                    { name: '県立木更津高校（理数科）', hensachi: 60, district: 9 },
+                    { name: '県立君津高校（普通科）', hensachi: 53, district: 9 },
+                    { name: '県立袖ヶ浦高校（普通科）', hensachi: 48, district: 9 },
+                    { name: '県立袖ヶ浦高校（情報コミュニケーション科）', hensachi: 47, district: 9 },
+                    { name: '県立市原八幡高校', hensachi: 44, district: 9 },
+                    { name: '県立木更津東高校（普通科）', hensachi: 42, district: 9 },
+                    { name: '県立姉崎高校', hensachi: 40, district: 9 },
+                    { name: '県立京葉高校', hensachi: 40, district: 9 },
+                    { name: '県立市原緑高校', hensachi: 37, district: 9 },
+                    { name: '県立天羽高校', hensachi: 35, district: 9 },
+                    { name: '県立市原高校（普通科）', hensachi: 35, district: 9 },
+                    { name: '県立君津青葉高校（総合学科）', hensachi: 35, district: 9 }
+                ]
+            },
+            specialized: [
+                { name: '県立千葉高校（理数科）', hensachi: 70, type: '理数科' },
+                { name: '市立千葉高校（理数科）', hensachi: 66, type: '理数科' },
+                { name: '県立船橋高校（理数科）', hensachi: 69, type: '理数科' },
+                { name: '県立柏高校（理数科）', hensachi: 62, type: '理数科' },
+                { name: '県立佐倉高校（理数科）', hensachi: 65, type: '理数科' },
+                { name: '県立木更津高校（理数科）', hensachi: 60, type: '理数科' },
+                { name: '県立長生高校（理数科）', hensachi: 63, type: '理数科' },
+                { name: '県立佐原高校（理数科）', hensachi: 56, type: '理数科' },
+                { name: '県立成東高校（理数科）', hensachi: 58, type: '理数科' },
+                { name: '市立銚子高校（理数科）', hensachi: 54, type: '理数科' },
+                { name: '県立幕張総合高校（看護科）', hensachi: 60, type: '看護科' },
+                { name: '県立千葉女子高校（家政科）', hensachi: 55, type: '家政科' },
+                { name: '県立木更津東高校（家政科）', hensachi: 42, type: '家政科' },
+                { name: '県立千葉工業高校（情報技術科）', hensachi: 53, type: '工業科' },
+                { name: '県立千葉工業高校（理数工学科）', hensachi: 53, type: '工業科' },
+                { name: '県立市川工業高校', hensachi: 47, type: '工業科' },
+                { name: '県立千葉商業高校（商業科・情報システム科）', hensachi: 51, type: '商業科' },
+                { name: '市立船橋高校（商業科）', hensachi: 50, type: '商業科' },
+                { name: '市立習志野高校（商業科）', hensachi: 52, type: '商業科' },
+                { name: '県立成田国際高校（国際科）', hensachi: 59, type: '国際科' },
+                { name: '県立松戸国際高校（国際教養科）', hensachi: 56, type: '国際科' },
+                { name: '市立松戸高校（国際人文科）', hensachi: 53, type: '国際科' },
+                { name: '県立東金高校（国際教養科）', hensachi: 50, type: '国際科' },
+                { name: '県立流山おおたかの森高校（国際コミュニケーション科）', hensachi: 50, type: '国際科' },
+                { name: '市立船橋高校（体育科）', hensachi: 50, type: '体育科' },
+                { name: '県立八千代高校（体育科）', hensachi: 53, type: '体育科' },
+                { name: '市立柏高校（スポーツ科学科）', hensachi: 45, type: '体育科' }
+            ]
+        };
+
+        // 学区の隣接関係
+        const adjacentDistricts = {
+            1: [2, 4, 6, 7, 9],
+            2: [1, 3, 4],
+            3: [2, 4],
+            4: [1, 2, 3, 5, 6],
+            5: [4, 6],
+            6: [1, 4, 5, 7],
+            7: [1, 6, 8, 9],
+            8: [7, 9],
+            9: [1, 7, 8]
+        };
+
+        // 推奨テキストデータベース
+        const textbookRules = {
+            '英語': [
+                {
+                    condition: (current, target) => current < 50 && target <= 50,
+                    books: [
+                        { name: 'フォレスタ英単語', publisher: 'スプリックス', reason: '単語量が不足しています。1週目の単語の和訳ができるようにしてください' },
+                        { name: 'ウェイ・アップ 高校入試対策', publisher: 'エデュケーショナルネットワーク', reason: '基礎レベルを網羅的に学習できます。予想問題や過去問前のテキストに最適です' },
+                        { name: 'フォレスタステップ', publisher: 'スプリックス', reason: '基礎的な文法理解を目指すものになります。' },
+                        { name: '英語読解C', publisher: '教育開発出版', reason: '文法の丸暗記から実践型に移すためのものになります。同社の英作文Cも併用すると、効果が大きいです。' },
+                        { name: '必勝シリーズ千葉県版', publisher: '日本教材出版', reason: '各教科ごとにあります。過去問の前に演習を行うことで、過去問への免疫をつけさせることができます。' }
+                    ]
+                },
+                {
+                    condition: (current, target) => current <= 100 && target <= 100,
+                    books: [
+                        { name: 'リスニングC', publisher: 'エデュケーショナルネットワーク', reason: '中3配当の文法を使用したリスニング集です。受験用に予想問題のリスニングでは分量が少ないので、併用してください' }
+                    ]
+                },
+                {
+                    condition: (current, target) =>  target > 50,
+                    books: [
+                        { name: 'フォレスタ英単語', publisher: 'スプリックス', reason: '2週目の単語の英訳ができるようにしてください' },
+                        { name: 'フォレスタゴール', publisher: 'スプリックス', reason: '単語力があり、基礎的な文法理解がある場合の実践問題集です。' },
+                        { name: '高校入試対策 自由英作文', publisher: 'エデュケーショナルネットワーク', reason: '英作文の完成度が最終的な分岐点となります。副教材として使用してください' },
+                        { name: '千葉県入試トレーニング', publisher: '教育開発出版', reason: '必勝シリーズは、各教科ごとにあります。千葉県入試トレーニングよりも難易度が高いです。' },
+                        { name: 'fトレ・fテスト', publisher: '教育開発出版', reason: '演習量を稼ぐために、fトレカfテストも有効です。ただ、千葉県に特化していないため、演習量を稼ぐという感覚で使用してください' }
+                    ]
+                },
+            ],
+            '数学': [
+                {
+                    condition: (current, target) => current <= 50 && target <= 50,
+                    books: [
+                        { name: '精選全国高校入試問題集 計算・一行問題集', publisher: 'エデュケーショナルネットワーク', reason: '基礎力が足りていません。計算力は数学のベースとなるため、計算力向上を目指します。' },
+                        { name: 'ベースライン 数学一行問題 1000問トレーニング', publisher: '文理', reason: '問題数が多く、演習が多くできます。ただ、勉強に前向きではない生徒については、意欲を割く可能性があるため、おすすめできません' },
+                        { name: 'ウェイ・アップ 高校入試対策', publisher: 'エデュケーショナルネットワーク', reason: '基礎レベルを網羅的に学習できます。予想問題や過去問前のテキストに最適です' },
+                        { name: '必勝シリーズ千葉県版', publisher: '日本教材出版', reason: '各教科ごとにあります。過去問の前に演習を行うことで、過去問への免疫をつけさせることができます。' }
+                    ]
+                },
+                {
+                    condition: (current, target) => current > 50 && target >= 51,
+                    books: [
+                        { name: 'フォレスタゴール', publisher: 'スプリックス', reason: '後半にはかなり難問も多く、得点率向上に役立ちます' },
+                        { name: '千葉県入試トレーニング', publisher: '教育開発出版', reason: '必勝シリーズは、各教科ごとにあります。千葉県入試トレーニングよりも難易度が高いです。' },
+                        { name: 'fトレ・fテスト', publisher: '日本教育開発出版', reason: '演習量を稼ぐために、fトレカfテストも有効です。ただ、千葉県に特化していないため、演習量を稼ぐという感覚で使用してください' }
+                    ]
+                }
+            ],
+            '国語': [
+                {
+                    condition: (current, target) => current <= 50 && target <= 50,
+                    books: [
+                        { name: '漢検漢字学習ステップ3級', publisher: '', reason: '基礎的な語彙力が欠如しています。受験範囲である漢検3級を学ぶことで、読解力の基礎となる語彙力を補います。なお、画数は実施する必要はありません' },
+                        { name: 'ウェイ・アップ 高校入試対策', publisher: 'エデュケーショナルネットワーク', reason: '基礎レベルを網羅的に学習できます。予想問題や過去問前のテキストに最適です' },
+                        { name: '読解！国語入試力-必修編-', publisher: '学書', reason: '基礎レベル読解演習ができます。分量が少ないものの、演習量を稼ぐことで、読解力の底上げを目指します' },
+                        { name: '読解！国語入試力-実践編-', publisher: '学書', reason: '発展まではいきませんが、標準以上の読解演習ができます。' },
+                        { name: '作文対策', publisher: '教育開発出版', reason: 'たいていのテキストにも作文対策はついていますが、作文教科用のテキストです。作文の配点が高いため、対策は外せません' },
+                        { name: '必勝シリーズ千葉県版', publisher: '日本教材出版', reason: '各教科ごとにあります。過去問の前に演習を行うことで、過去問への免疫をつけさせることができます。' }
+                    ]
+                },
+
+                {
+                    condition: (current, target) => current > 50 && target >= 51,
+                    books: [
+                        { name: 'BUILDER 受験版', publisher: '学書', reason: '読解演習に使用してください。千葉県では出題されない詩・短歌・俳句は実施する必要はありません。' },
+                        { name: '千葉県入試トレーニング', publisher: '教育開発出版', reason: '必勝シリーズは、各教科ごとにあります。千葉県入試トレーニングよりも難易度が高いです。' },
+                        { name: 'fトレ・fテスト', publisher: '日本教育開発出版/教育開発出版', reason: '演習量を稼ぐために、fトレカfテストも有効です。ただ、千葉県に特化していないため、演習量を稼ぐという感覚で使用してください' }
+                    ]
+                }
+            ],
+            '理科': [
+                {
+                    condition: (current, target) =>current  <= 50 && target <= 50,
+                    books: [
+                        { name: '精選トレーニング中3', publisher: 'エデュケーショナルネットワーク', reason: '通常授業用としても利用ができますが、全学年の復習が入っており、ドリル式の学習のため、取り組みやすい特徴があります' },
+                        { name: 'ウェイ・アップ 高校入試対策', publisher: 'エデュケーショナルネットワーク', reason: '基礎レベルを網羅的に学習できます。予想問題や過去問前のテキストに最適です' },
+                        { name: '必勝シリーズ千葉県版', publisher: '日本教材出版', reason: '各教科ごとにあります。過去問の前に演習を行うことで、過去問への免疫をつけさせることができます。' }
+                    ]
+                },
+                {
+                    condition: (current, target) => current > 50 && target > 50,
+                    books: [
+                        { name: 'フォレスタゴール', publisher: 'スプリックス', reason: '網羅的に学習ができ、予想問題の全段階として有効です。ただ、他の強化を圧迫する場合は、使用を避けたほうが良いです' },
+                        { name: '必勝シリーズ千葉県版', publisher: '日本教材出版', reason: '基礎的な問題が多い傾向がありますが、入試トレーニングに入る前の準備として実施します' },
+                        { name: '千葉県入試トレーニング', publisher: '教育開発出版', reason: '必勝シリーズは、各教科ごとにあります。千葉県入試トレーニングよりも難易度が高いです。' },
+                        { name: 'fトレ・fテスト', publisher: '日本教育開発出版', reason: '演習量を稼ぐために、fトレカfテストも有効です。ただ、千葉県に特化していないため、演習量を稼ぐという感覚で使用してください' }
+                    ]
+                }
+            ],
+            '社会': [
+                {
+                    condition: (current, target) => current <= 50 && target <= 50,
+                    books: [
+                        { name: '精選トレーニング歴史・地理・中3', publisher: 'エデュケーショナルネットワーク', reason: '通常授業用としても利用ができますが、全学年の復習が入っており、ドリル式の学習のため、取り組みやすい特徴があります。地理と歴史と中3で別冊となっています。' },
+                        { name: 'ウェイ・アップ 高校入試対策', publisher: 'エデュケーショナルネットワーク', reason: '基礎レベルを網羅的に学習できます。予想問題や過去問前のテキストに最適です' },
+                        { name: '必勝シリーズ千葉県版', publisher: '日本教材出版', reason: '各教科ごとにあります。過去問の前に演習を行うことで、過去問への免疫をつけさせることができます。' }
+                    ]
+                },
+                {
+                    condition: (current, target) => current > 50 && target > 50,
+                    books: [
+                        { name: 'フォレスタゴール', publisher: 'スプリックス', reason: '網羅的に学習ができ、予想問題の全段階として有効です。ただ、他の強化を圧迫する場合は、使用を避けたほうが良いです' },
+                        { name: '必勝シリーズ千葉県版', publisher: '日本教材出版', reason: '基礎的な問題が多い傾向がありますが、入試トレーニングに入る前の準備として実施します' },
+                        { name: '千葉県入試トレーニング', publisher: '教育開発出版', reason: '必勝シリーズは、各教科ごとにあります。千葉県入試トレーニングよりも難易度が高いです。' },
+                        { name: 'fトレ・fテスト', publisher: '教育開発出版', reason: '演習量を稼ぐために、fトレカfテストも有効です。ただ、千葉県に特化していないため、演習量を稼ぐという感覚で使用してください' }
+                    ]
+                }
+            ]
+        };
+
+        // グローバル変数
+        let expandedBook = null;
+        let selectedSchoolData = null;
+
+        // イベントリスナー設定
+        document.addEventListener('DOMContentLoaded', function() {
+            // 偏差値入力のバリデーション
+            document.querySelectorAll('.score-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    validateScore(this);
+                    updateNaishin();
+                });
+                input.addEventListener('blur', function() {
+                    validateScore(this);
+                });
+            });
+
+            // 内申点入力のバリデーション
+            document.querySelectorAll('.naishin-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    validateNaishin(this);
+                    updateNaishin();
+                });
+                input.addEventListener('blur', function() {
+                    validateNaishin(this);
+                });
+            });
+
+            // 学科選択の監視
+            document.getElementById('schoolType').addEventListener('change', handleSchoolTypeChange);
+
+            // 学区選択の監視
+            document.getElementById('studentDistrict').addEventListener('change', handleDistrictChange);
+
+            // フォーム送信
+            document.getElementById('mainForm').addEventListener('submit', handleSubmit);
+        });
+
+        // 偏差値のバリデーション
+        function validateScore(input) {
+            const value = parseFloat(input.value);
+            const errorDiv = input.parentElement.querySelector('.error-message');
+            
+            // エラーメッセージがない場合は作成
+            if (!errorDiv) {
+                const newErrorDiv = document.createElement('div');
+                newErrorDiv.className = 'error-message';
+                input.parentElement.appendChild(newErrorDiv);
+            }
+            
+            const errorElement = input.parentElement.querySelector('.error-message');
+            
+            if (input.value === '') {
+                input.classList.remove('error');
+                errorElement.classList.remove('show');
+                errorElement.textContent = '';
+                return true;
+            }
+            
+            if (isNaN(value) || value < 0 || value > 100) {
+                input.classList.add('error');
+                errorElement.classList.add('show');
+                errorElement.textContent = '偏差値は0～100の範囲で入力してください';
+                return false;
+            }
+            
+            input.classList.remove('error');
+            errorElement.classList.remove('show');
+            errorElement.textContent = '';
+            return true;
+        }
+
+        // 内申点のバリデーション
+        function validateNaishin(input) {
+            const value = parseInt(input.value);
+            const errorDiv = input.parentElement.querySelector('.error-message');
+            
+            // エラーメッセージがない場合は作成
+            if (!errorDiv) {
+                const newErrorDiv = document.createElement('div');
+                newErrorDiv.className = 'error-message';
+                input.parentElement.appendChild(newErrorDiv);
+            }
+            
+            const errorElement = input.parentElement.querySelector('.error-message');
+            
+            if (input.value === '') {
+                input.classList.remove('error');
+                errorElement.classList.remove('show');
+                errorElement.textContent = '';
+                return true;
+            }
+            
+            if (isNaN(value) || value < 0 || value > 45) {
+                input.classList.add('error');
+                errorElement.classList.add('show');
+                errorElement.textContent = '内申点は0～45の範囲で入力してください';
+                return false;
+            }
+            
+            input.classList.remove('error');
+            errorElement.classList.remove('show');
+            errorElement.textContent = '';
+            return true;
+        }
+
+        // 内申点合計の計算と表示
+        function updateNaishin() {
+            const grade1 = parseInt(document.getElementById('grade1').value) || 0;
+            const grade2 = parseInt(document.getElementById('grade2').value) || 0;
+            const grade3 = parseInt(document.getElementById('grade3').value) || 0;
+            const total = grade1 + grade2 + grade3;
+
+            if (total > 0) {
+                document.getElementById('totalNaishin').textContent = total;
+                document.getElementById('naishinDisplay').classList.remove('hidden');
+            } else {
+                document.getElementById('naishinDisplay').classList.add('hidden');
+            }
+        }
+
+        // 学科選択時の処理
+        function handleSchoolTypeChange() {
+            const schoolType = document.getElementById('schoolType').value;
+            const districtSelect = document.getElementById('districtSelect');
+            const schoolSelect = document.getElementById('schoolSelect');
+
+            if (schoolType === 'normal') {
+                districtSelect.classList.remove('hidden');
+                schoolSelect.classList.add('hidden');
+            } else if (schoolType === 'specialized') {
+                districtSelect.classList.add('hidden');
+                updateSchoolList();
+                schoolSelect.classList.remove('hidden');
+            } else {
+                districtSelect.classList.add('hidden');
+                schoolSelect.classList.add('hidden');
+            }
+        }
+
+        // 学区選択時の処理
+        function handleDistrictChange() {
+            updateSchoolList();
+            document.getElementById('schoolSelect').classList.remove('hidden');
+        }
+
+        // 志望校リストの更新
+        function updateSchoolList() {
+            const schoolType = document.getElementById('schoolType').value;
+            const district = document.getElementById('studentDistrict').value;
+            const targetSchoolSelect = document.getElementById('targetSchool');
+
+            targetSchoolSelect.innerHTML = '<option value="">選択してください</option>';
+
+            let schools = [];
+
+            if (schoolType === 'specialized') {
+                schools = chibaHighSchools.specialized;
+            } else if (schoolType === 'normal' && district) {
+                const districtNum = parseInt(district);
+                schools = [...(chibaHighSchools[`district${districtNum}`]?.普通科 || [])];
+
+                // 隣接学区の高校も追加
+                const adjacent = adjacentDistricts[districtNum] || [];
+                adjacent.forEach(adjDistrict => {
+                    const adjSchools = chibaHighSchools[`district${adjDistrict}`]?.普通科 || [];
+                    schools.push(...adjSchools);
+                });
+
+                schools.sort((a, b) => b.hensachi - a.hensachi);
+            }
+
+            schools.forEach(school => {
+                const option = document.createElement('option');
+                option.value = JSON.stringify(school);
+                option.textContent = `${school.name} (偏差値目安: ${school.hensachi})`;
+                targetSchoolSelect.appendChild(option);
+            });
+        }
+
+        // フォーム送信処理
+        function handleSubmit(e) {
+            e.preventDefault();
+
+            // バリデーションチェック
+            let isValid = true;
+            
+            // 偏差値のバリデーション
+            document.querySelectorAll('.score-input').forEach(input => {
+                if (!validateScore(input)) {
+                    isValid = false;
+                }
+            });
+            
+            // 内申点のバリデーション
+            document.querySelectorAll('.naishin-input').forEach(input => {
+                if (!validateNaishin(input)) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                alert('入力エラーがあります。赤色で表示されている項目を修正してください。');
+                return;
+            }
+
+            const targetSchoolValue = document.getElementById('targetSchool').value;
+            if (!targetSchoolValue) {
+                alert('志望校を選択してください');
+                return;
+            }
+
+            const studentName = document.getElementById('studentName').value;
+            if (!studentName) {
+                alert('生徒名を入力してください');
+                return;
+            }
+
+            selectedSchoolData = JSON.parse(targetSchoolValue);
+            displayResults();
+        }
+
+        // Excel出力機能
+        function exportToExcel() {
+            const studentName = document.getElementById('studentName').value;
+            const scores = {
+                english: parseFloat(document.getElementById('english').value) || 0,
+                math: parseFloat(document.getElementById('math').value) || 0,
+                japanese: parseFloat(document.getElementById('japanese').value) || 0,
+                science: parseFloat(document.getElementById('science').value) || 0,
+                social: parseFloat(document.getElementById('social').value) || 0
+            };
+            const fiveSubject = parseFloat(document.getElementById('fiveSubjectHensachi').value) || 0;
+            const grade1 = parseInt(document.getElementById('grade1').value) || 0;
+            const grade2 = parseInt(document.getElementById('grade2').value) || 0;
+            const grade3 = parseInt(document.getElementById('grade3').value) || 0;
+            const totalNaishin = grade1 + grade2 + grade3;
+
+            const validScores = Object.values(scores).filter(v => v > 0);
+            const averageHensachi = validScores.length > 0 
+                ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
+                : 0;
+
+            const targetHensachi = selectedSchoolData.hensachi;
+
+            // CSVデータを作成
+            let csv = '\uFEFF'; // BOM for Excel UTF-8 support
+            csv += '千葉県公立高校受験対策テキスト自動判定結果\n\n';
+            
+            csv += '【生徒情報】\n';
+            csv += `生徒名,${studentName}\n`;
+            csv += `志望校,${selectedSchoolData.name}\n`;
+            csv += `志望校偏差値,${targetHensachi}\n\n`;
+
+            csv += '【成績情報】\n';
+            csv += `英語偏差値,${scores.english || '-'}\n`;
+            csv += `数学偏差値,${scores.math || '-'}\n`;
+            csv += `国語偏差値,${scores.japanese || '-'}\n`;
+            csv += `理科偏差値,${scores.science || '-'}\n`;
+            csv += `社会偏差値,${scores.social || '-'}\n`;
+            csv += `5教科平均偏差値,${averageHensachi}\n`;
+            csv += `5教科総合偏差値,${fiveSubject || '-'}\n\n`;
+
+            csv += '【内申点】\n';
+            csv += `1年生,${grade1}\n`;
+            csv += `2年生,${grade2}\n`;
+            csv += `3年生,${grade3}\n`;
+            csv += `合計,${totalNaishin}\n\n`;
+
+            csv += '【推奨テキスト】\n';
+            
+            const subjectNames = {
+                english: '英語',
+                math: '数学',
+                japanese: '国語',
+                science: '理科',
+                social: '社会'
+            };
+
+            Object.keys(subjectNames).forEach(subjectKey => {
+                const currentScore = scores[subjectKey];
+                if (!currentScore || currentScore === 0) return;
+
+                const recommendations = getRecommendedTextbooks(subjectNames[subjectKey], currentScore, targetHensachi);
+                if (recommendations.length === 0) return;
+
+                csv += `\n【${subjectNames[subjectKey]}】（現在:${currentScore} → 目標:${targetHensachi}）\n`;
+                csv += 'テキスト名,出版社,受講理由\n';
+
+                recommendations.forEach(book => {
+                    const name = book.name.replace(/,/g, '，');
+                    const publisher = (book.publisher || '').replace(/,/g, '，');
+                    const reason = book.reason.replace(/,/g, '，').replace(/\n/g, ' ');
+                    csv += `${name},${publisher},${reason}\n`;
+                });
+            });
+
+            // ダウンロード
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            const timestamp = new Date().toISOString().slice(0, 10);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `推奨テキスト_${studentName}_${timestamp}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 結果表示
+        function displayResults() {
+            const scores = {
+                english: parseFloat(document.getElementById('english').value) || 0,
+                math: parseFloat(document.getElementById('math').value) || 0,
+                japanese: parseFloat(document.getElementById('japanese').value) || 0,
+                science: parseFloat(document.getElementById('science').value) || 0,
+                social: parseFloat(document.getElementById('social').value) || 0
+            };
+
+            const validScores = Object.values(scores).filter(v => v > 0);
+            const averageHensachi = validScores.length > 0 
+                ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
+                : 0;
+
+            const targetHensachi = selectedSchoolData.hensachi;
+            const gap = targetHensachi - averageHensachi;
+
+            // 統計表示
+            document.getElementById('currentHensachi').textContent = averageHensachi;
+            document.getElementById('targetHensachi').textContent = targetHensachi;
+            document.getElementById('targetSchoolName').textContent = selectedSchoolData.name;
+            document.getElementById('gapHensachi').textContent = gap >= 0 ? '+' + gap : gap;
+
+            // 偏差値±3の高校表示
+            displayNearbySchools(averageHensachi);
+
+            // 推奨テキスト表示
+            displayTextbooks(scores, targetHensachi);
+
+            // フォームを非表示にして結果エリアを表示
+            document.querySelector('.form-area').classList.add('hidden');
+            document.getElementById('resultsArea').classList.remove('hidden');
+            
+            // ページトップへスクロール
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 入力画面に戻る
+        function backToForm() {
+            document.querySelector('.form-area').classList.remove('hidden');
+            document.getElementById('resultsArea').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 偏差値±3の高校表示
+        function displayNearbySchools(averageHensachi) {
+            const allSchools = [
+                ...(chibaHighSchools.district1.普通科 || []),
+                ...(chibaHighSchools.district2.普通科 || []),
+                ...(chibaHighSchools.district3.普通科 || []),
+                ...(chibaHighSchools.district4.普通科 || []),
+                ...(chibaHighSchools.district5.普通科 || []),
+                ...(chibaHighSchools.district6.普通科 || []),
+                ...(chibaHighSchools.district7.普通科 || []),
+                ...(chibaHighSchools.district8.普通科 || []),
+                ...(chibaHighSchools.district9.普通科 || []),
+                ...chibaHighSchools.specialized
+            ];
+
+            const nearbySchools = allSchools
+                .filter(school => Math.abs(school.hensachi - averageHensachi) <= 3)
+                .sort((a, b) => b.hensachi - a.hensachi);
+
+            if (nearbySchools.length > 0) {
+                const listHtml = nearbySchools
+                    .map(school => `<span class="school-badge">${school.name} (偏差値 ${school.hensachi})</span>`)
+                    .join('');
+                document.getElementById('nearbySchoolsList').innerHTML = listHtml;
+                document.getElementById('nearbySchoolsCard').classList.remove('hidden');
+            } else {
+                document.getElementById('nearbySchoolsCard').classList.add('hidden');
+            }
+        }
+
+        // 推奨テキスト表示
+        function displayTextbooks(scores, targetHensachi) {
+            const subjectNames = {
+                english: '英語',
+                math: '数学',
+                japanese: '国語',
+                science: '理科',
+                social: '社会'
+            };
+
+            let html = '';
+
+            Object.keys(subjectNames).forEach(subjectKey => {
+                const currentScore = scores[subjectKey];
+                if (!currentScore || currentScore === 0) return;
+
+                const recommendations = getRecommendedTextbooks(subjectNames[subjectKey], currentScore, targetHensachi);
+                if (recommendations.length === 0) return;
+
+                html += `
+                    <div class="subject-section">
+                        <h3 class="subject-title">
+                            ▶ ${subjectNames[subjectKey]}
+                            <span style="font-size: 14px; color: #718096; font-weight: 400;">
+                                （現在: ${currentScore} → 目標: ${targetHensachi}）
+                            </span>
+                        </h3>
+                `;
+
+                recommendations.forEach((book, index) => {
+                    const bookId = `${subjectKey}-${index}`;
+                    html += `
+                        <div>
+                            <div class="textbook-card" onclick="toggleBookDetail('${bookId}')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 16px; font-weight: 700; color: #2d3748; margin-bottom: 4px;">
+                                            ${book.name}
+                                        </div>
+                                        ${book.publisher ? `<div style="font-size: 14px; color: #718096;">${book.publisher}</div>` : ''}
+                                    </div>
+                                    <div style="font-size: 12px; color: #667eea; font-weight: 700;" id="toggle-${bookId}">
+                                        ▶ 詳細
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="detail-${bookId}" class="textbook-detail hidden">
+                                <div style="font-size: 13px; font-weight: 700; color: #2d3748; margin-bottom: 8px;">
+                                    受講理由：
+                                </div>
+                                <div style="font-size: 14px; color: #4a5568; line-height: 1.6;">
+                                    ${book.reason}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+            });
+
+            document.getElementById('textbooksList').innerHTML = html || '<p>推奨テキストがありません</p>';
+        }
+
+        // 推奨テキスト取得
+        function getRecommendedTextbooks(subjectName, currentScore, targetScore) {
+            const current = parseInt(currentScore) || 0;
+            const target = parseInt(targetScore) || 0;
+
+            const rules = textbookRules[subjectName] || [];
+            const recommendations = [];
+
+            rules.forEach(rule => {
+                if (rule.condition(current, target)) {
+                    recommendations.push(...rule.books);
+                }
+            });
+
+            // 重複を除去
+            const uniqueBooks = [];
+            const bookNames = new Set();
+            recommendations.forEach(book => {
+                if (!bookNames.has(book.name)) {
+                    bookNames.add(book.name);
+                    uniqueBooks.push(book);
+                }
+            });
+
+            return uniqueBooks;
+        }
+
+        // テキスト詳細の展開/折りたたみ
+        function toggleBookDetail(bookId) {
+            const detailElement = document.getElementById(`detail-${bookId}`);
+            const toggleElement = document.getElementById(`toggle-${bookId}`);
+
+            if (detailElement.classList.contains('hidden')) {
+                detailElement.classList.remove('hidden');
+                toggleElement.textContent = '▼ 閉じる';
+            } else {
+                detailElement.classList.add('hidden');
+                toggleElement.textContent = '▶ 詳細';
+            }
+        }
+    </script>
+</body>
+</html>
